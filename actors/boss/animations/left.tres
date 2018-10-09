@@ -1,0 +1,35 @@
+[gd_resource type="Animation" format=2]
+
+[resource]
+
+resource_name = "dash_left"
+length = 1.0
+loop = false
+step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.6, 0.8 ),
+"transitions": PoolRealArray( 2, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 13200, -1016 ), Vector2( 12192, -1024 ), Vector2( 12216, -1024 ) ]
+}
+tracks/1/type = "method"
+tracks/1/path = NodePath("../boss_pit/camera/camera")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0.6 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [ null, null ],
+"method": "shake"
+} ]
+}
+

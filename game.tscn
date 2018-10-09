@@ -1,0 +1,31 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://game.gd" type="Script" id=1]
+[ext_resource path="res://levels/level_00/level_00.tscn" type="PackedScene" id=2]
+[ext_resource path="res://screens/interface/GUI/interface.tscn" type="PackedScene" id=3]
+
+[node name="game" type="Node"]
+script = ExtResource( 1 )
+
+[node name="level_00" parent="." instance=ExtResource( 2 )]
+
+[node name="template_actor" parent="level_00" index="1"]
+editor/display_folded = false
+
+[node name="boss" parent="level_00" index="7"]
+editor/display_folded = false
+
+[node name="interface" parent="." instance=ExtResource( 3 )]
+ammo_node = NodePath("../level_00/ammos")
+
+[connection signal="player_died" from="level_00" to="." method="_on_level_00_player_died"]
+[connection signal="shooted" from="level_00/template_actor/gun" to="interface" method="_on_gun_shooted"]
+[connection signal="player_damaged" from="level_00/boss/brain" to="." method="_on_brain_player_damaged"]
+
+[editable path="level_00"]
+
+[editable path="level_00/template_actor"]
+
+[editable path="level_00/boss"]
+
+[editable path="interface"]

@@ -1,0 +1,88 @@
+[gd_scene load_steps=14 format=2]
+
+[ext_resource path="res://actors/template/player_platform_actor.gd" type="Script" id=1]
+[ext_resource path="res://actors/state_machine/state_machine.tscn" type="PackedScene" id=2]
+[ext_resource path="res://actors/state_machine/states/idle.gd" type="Script" id=3]
+[ext_resource path="res://actors/state_machine/states/walk.gd" type="Script" id=4]
+[ext_resource path="res://actors/template/coyotte_fall.tscn" type="PackedScene" id=5]
+[ext_resource path="res://actors/state_machine/states/jump.gd" type="Script" id=6]
+[ext_resource path="res://actors/state_machine/states/dash.gd" type="Script" id=7]
+[ext_resource path="res://actors/state_machine/states/fall.gd" type="Script" id=8]
+[ext_resource path="res://actors/state_machine/states/wall.gd" type="Script" id=9]
+[ext_resource path="res://actors/state_machine/states/climb.gd" type="Script" id=10]
+[ext_resource path="res://actors/template/pass_through.tscn" type="PackedScene" id=11]
+[ext_resource path="res://actors/template/ladder_check.tscn" type="PackedScene" id=12]
+
+[sub_resource type="RectangleShape2D" id=1]
+
+custom_solver_bias = 0.0
+extents = Vector2( 32, 64 )
+
+[node name="template_actor" type="KinematicBody2D"]
+input_pickable = false
+collision_layer = 2
+collision_mask = 15
+collision/safe_margin = 0.08
+motion/sync_to_physics = false
+script = ExtResource( 1 )
+_sections_unfolded = [ "Collision", "Transform" ]
+GRAVITY = 50
+FLOOR_NORMAL = Vector2( 0, -1 )
+SLOPE_STOP_SPEED = 200
+SLOPE_MAX_DEGREE = 46
+FALL_THRESHOLD = 100
+can_dash = true
+left = "left_1"
+right = "right_1"
+up = "up_1"
+down = "down_1"
+jump = "jump_1"
+dash = "dash_1"
+
+[node name="shape" type="CollisionShape2D" parent="."]
+position = Vector2( 0, -48 )
+z_index = -1
+shape = SubResource( 1 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="state_machine" parent="." instance=ExtResource( 2 )]
+
+[node name="idle" type="Node" parent="state_machine"]
+script = ExtResource( 3 )
+
+[node name="walk" type="Node" parent="state_machine"]
+script = ExtResource( 4 )
+speed = 400
+
+[node name="coyotte_fall" parent="state_machine/walk" instance=ExtResource( 5 )]
+
+[node name="jump" type="Node" parent="state_machine"]
+script = ExtResource( 6 )
+jump_height = 800
+max_jumps = 1
+
+[node name="dash" type="Node" parent="state_machine"]
+script = ExtResource( 7 )
+length = 300
+speed = 1000
+
+[node name="fall" type="Node" parent="state_machine"]
+script = ExtResource( 8 )
+MAX_FALL_SPEED = 2000
+
+[node name="wall" type="Node" parent="state_machine"]
+script = ExtResource( 9 )
+wall_jump = 800
+dash_jump_multiplier = 1.4
+MAX_WALL_SPEED = 600
+
+[node name="climb" type="Node" parent="state_machine"]
+script = ExtResource( 10 )
+speed = 200.0
+
+[node name="pass_through" parent="." instance=ExtResource( 11 )]
+_sections_unfolded = [ "Collision", "Transform" ]
+
+[node name="ladder_check" parent="." instance=ExtResource( 12 )]
+snap = true
+
